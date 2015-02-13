@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<meta charset="utf-8" />
+		<title>The Browntown Countdown</title>
+		<link rel="stylesheet" type="text/css" href="css/countdown.css">
+		<link  href="http://fonts.googleapis.com/css?family=Reenie+Beanie:regular" 
+rel="stylesheet"
+type="text/css">
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script> 
+	</head>
+    
+    <body>
+    <div class="content"> Brown class of 2015, you are graduating in </br> <span id="timeLeft"></span>
+     
+<!--      <div style="width:400px;margin:auto;"><div style="text-align:center;font-size:24px;padding-bottom:5px;"></div>
+ -->
+     <!-- <object data="http://www.widget.knowndays.com/p/countdown-may-24.html" style="width:400px;height:60px;"></object><span style="font-size:12px;float:right;padding-top:2px;"></span> -->
+<!--      <iframe src="http://free.timeanddate.com/countdown/i4jm25g4/n878/cf12/cm0/cu4/ct0/cs0/ca0/co0/cr0/ss0/cacfff/cpcfff/pct/tcfff/fs100/szw448/szh189/iso2015-05-24T13:00:00" allowTransparency="true" frameborder="0" width="171" height="40"></iframe>
+ -->
+ <ul>
+  <li>
+    <a href="#">
+      <h2>Bucket List</h2>
+	<div id="buckit-list"></div> 
+    </a>
+  </li>
+</ul>
+
+  	<script>
+ function updateTimeSpan(elem_id, date) {
+     var theSpan = document.getElementById('timeLeft');
+     var today = new Date();
+     var target = new Date(2015, 4, 24, 13, 0,0,0).getTime();
+       var curr_time = today.getTime();
+      var seconds_left = (target - curr_time) / 1000;
+
+    var days, hours, minutes, seconds;
+
+	  days = parseInt(seconds_left / 86400);
+      seconds_left = seconds_left % 86400;
+      hours = parseInt(seconds_left / 3600);
+      seconds_left = seconds_left % 3600;
+      minutes = parseInt(seconds_left / 60);
+      seconds = parseInt(seconds_left % 60);
+
+     theSpan.innerHTML = days + ' days, ' + hours + ' hours, ' + minutes + ' minutes, and ' + seconds + ' seconds';
+     setTimeout('updateTimeSpan()', 100);
+}
+
+ onload = updateTimeSpan();
+
+///get data for bucketlist
+
+$(document).ready(function() {  
+//source file is https://docs.google.com/spreadsheets/d/12tuAnUz5m6SWbCGjLJ1o_XjPLNbibJCmPFaPKLNzQbg/pubhtml
+
+
+$(function listBuckit() {  
+$.getJSON( "https://spreadsheets.google.com/feeds/list/12tuAnUz5m6SWbCGjLJ1o_XjPLNbibJCmPFaPKLNzQbg/od6/public/values?alt=json-in-script&callback=?",
+
+   function (data) {	
+
+		$('div#buckit-list').append('<ul class="items"></ul>');
+
+		$.each(data.feed.entry, function(i,entry) {	
+
+			var item = '<span style="display:none">' + entry.id.$t + '</span>';	
+
+			item += '<img src="http://covers.openlibrary.org/b/isbn/' + entry.gsx$isbn.$t + '-S.jpg"/>';
+
+			item += '<span class="meta"><a href="http://www.worldcat.org/isbn/' + entry.gsx$isbn.$t + '">' + entry.title.$t + '</a>';	
+
+			item += '<br/>Author: ' + entry.gsx$author.$t;	
+
+			if (entry.gsx$notes.$t) {	
+
+				item += '<br/>Description: ' + entry.gsx$notes.$t;	
+
+			}	
+
+			$('.items').append('<li>' + item + '</span></li>');	
+
+			});
+
+		});
+
+	});
+
+});
+
+</script>
+
+
+<a href="https://docs.google.com/a/brown.edu/forms/d/16klmS5wGgVH_MWBExgInXEZYUnInvxIC-kThWs24GGQ/viewform?usp=send_form">Submit a Bucket List Item</a>
+
+	</div>
+
+
+	</body>
+</html>
